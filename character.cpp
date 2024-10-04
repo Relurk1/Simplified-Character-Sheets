@@ -41,12 +41,86 @@ Character::Character() {
     saveMap[std::string("cha")] = std::pair<uint8_t*, uint8_t>(&strength, 0);
 }
 
+//Getters
+
 uint8_t Character::getAC() const { return AC; }
 uint8_t Character::getProficiency() const { return proficiency; }
 uint8_t Character::getMaxHP() const { return maxHP; }
 uint8_t Character::getCurrentHP() const { return currentHP; }
 uint8_t Character::getSpeed() const { return speed; }
-//FIXME - get rid of this stupid placeholder
+const std::string& Character::getFeaturesAndTraits() const {return featuresAndTraits;}
+
 uint8_t Character::getStat(std::string& code) const {
-    return 0;
+    if(code.compare("str") == 0) 
+        return strength;
+    else if(code.compare("dex") == 0)
+        return dexterity;
+    else if(code.compare("con") == 0)
+        return constitution;
+    else if(code.compare("int") == 0)
+        return intelligence;
+    else if(code.compare("cha") == 0)
+        return charisma;
+    else
+        return -1;
+}
+
+int8_t Character::getSkill(std::string& code) const {
+    if(skillMap.count(code) != 0) {
+        std::pair<uint8_t*, uint8_t> skill = skillMap.find(code)->second;
+        return ((*skill.first-10)/2) + proficiency*skill.second;
+    }
+    else {
+        return -1;
+    }
+}
+
+int8_t Character::getSave(std::string& code) const {
+    if(saveMap.count(code) != 0) {
+        std::pair<uint8_t*, uint8_t> save = saveMap.find(code)->second;
+        return ((*save.first-10)/2) + proficiency*save.second;
+    }
+    else {
+        return -1;
+    }
+}
+
+//Setters
+
+void Character::setAC(uint8_t ac) {AC = ac;}
+void Character::setProficiency(uint8_t prof) {proficiency = prof;}
+void Character::setMaxHP(uint8_t mhp) {maxHP = mhp;}
+void Character::setCurrentHP(uint8_t chp) {currentHP = chp;}
+void Character::setSpeed(uint8_t spd) {speed = spd;}
+
+void Character::setStat(std::string& code, uint8_t stat) {
+    if(stat > 20)
+        return;
+    if(code.compare("str") == 0) 
+        strength = stat;
+    else if(code.compare("dex") == 0)
+        dexterity = stat;
+    else if(code.compare("con") == 0)
+        constitution = stat;
+    else if(code.compare("int") == 0)
+        intelligence = stat;
+    else if(code.compare("cha") == 0)
+        charisma = stat;
+}
+
+void Character::setSkillProficiency(std::string& code, uint8_t prof) {
+    if(skillMap.count(code) == 0 || prof > 2)
+        return;
+    skillMap.find(code)->second.second = prof;
+}
+
+void Character::setSaveProficiency(std::string& code, uint8_t prof) {
+    if(saveMap.count(code) == 0 || prof > 2)
+        return;
+    saveMap.find(code)->second.second = prof;
+}
+
+void Character::setFeaturesAndTraits(std::string& feats) {
+    featuresAndTraits.clear();
+    featuresAndTraits = feats;
 }

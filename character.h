@@ -33,18 +33,18 @@ class Character {
         uint8_t getCurrentHP() const;
         uint8_t getSpeed() const;
         uint8_t getStat(std::string& code) const;
-        uint8_t getSkill(std::string& code) const;
-        uint8_t getSave(std::string& code) const;
+        int8_t getSkill(std::string& code) const;
+        int8_t getSave(std::string& code) const;
         const std::string& getFeaturesAndTraits() const;
 
-        void setAC(uint8_t);
-        void setProficiency(uint8_t);
-        void setMaxHP(uint8_t);
-        void setCurrentHP(uint8_t);
-        void setSpeed(uint8_t);
+        void setAC(uint8_t ac);
+        void setProficiency(uint8_t prof);
+        void setMaxHP(uint8_t mhp);
+        void setCurrentHP(uint8_t chp);
+        void setSpeed(uint8_t spd);
         void setStat(std::string& code, uint8_t stat);
-        void setSkillProficiency(std::string& code, int prof);
-        void setSaveProficiency(std::string& code, int prof);
+        void setSkillProficiency(std::string& code, uint8_t prof);
+        void setSaveProficiency(std::string& code, uint8_t prof);
         void setFeaturesAndTraits(std::string& feats);
 
     friend class Weapon;
