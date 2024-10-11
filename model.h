@@ -8,7 +8,8 @@
 
 class Model {
     private:
-        Character character;
+        //Character character;
+        Meta meta;
     public:
         Model();
 };
