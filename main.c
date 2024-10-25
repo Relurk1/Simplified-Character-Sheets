@@ -1,20 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include "views.h"
+#include "model.h"
+#include "controller.h"
 
-void createController() {
-    refresh();
-    printw("create\n");
-    getch();
-}
-
-void loadController() {
-    refresh();
-    printw("load\n");
-    getch();
-}
 
 int main() {
+
+    Character character;
 
     initscr();
 
@@ -24,7 +18,7 @@ int main() {
     buffer[sizeof(buffer)-1] = '\0';
     while(strcmp(buffer, "q") != 0 && strcmp(buffer, "quit") != 0) {
         if(strcmp(buffer, "c") == 0 || strcmp(buffer, "create") == 0) {
-            createController();
+            createController(&character);
             break;
         }
         else if (strcmp(buffer, "l") == 0 || strcmp(buffer, "load") == 0) {
