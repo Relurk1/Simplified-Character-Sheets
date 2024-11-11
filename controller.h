@@ -3,7 +3,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include "views.h"
-#include "model.h"
+#include "util.h"
 
 void createController(Character* character) {
     clear();
@@ -94,6 +94,13 @@ void createController(Character* character) {
     else {
         character->proficiency = (int)val;
     }
+
+    clear();
+    char skills[128];
+    printw("Enter a space seperated list of all skills with proficiency\n");
+    printw(">> ");
+    getnstr(skills, sizeof(skills));
+    parseSkillString(skills, character, 1);
 
     getch();
 }
