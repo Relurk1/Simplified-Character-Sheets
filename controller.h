@@ -108,10 +108,10 @@ void createController(Character* character) {
     manageSkillString(skills, character, 1);
 
     memset(skills, '\0', 128);
-    printw("Enter a space seperated list of all skills with expertise");
+    printw("Enter a space seperated list of all skills with expertise\n");
     printw(">> ");
     getnstr(skills, sizeof(skills));
-    manageSkillString(skills, character, 2);
+    manageSaveString(skills, character);
 
     getch();
 }

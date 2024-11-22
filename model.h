@@ -33,7 +33,7 @@ typedef enum {
     SLEI,
     STEA,
     SURV,
-    NONE
+    NONESKL
 } Skills;
 
 static const struct {
@@ -64,7 +64,7 @@ Skills skillStrToEnum (const char *str) {
     for (i=0; i<sizeof(skillConversion)/sizeof(skillConversion[0]); i++)
         if (!strcmp (str, skillConversion[i].str))
             return skillConversion[i].val;    
-    return NONE;
+    return NONESKL;
 }
 
 typedef enum {
@@ -73,7 +73,8 @@ typedef enum {
     CON,
     INT,
     WIS,
-    CHA
+    CHA,
+    NONESAV
 } Saves;
 
 static const struct {
@@ -88,12 +89,12 @@ static const struct {
     {CHA, "CHA"},
 };
 
-Skills saveStrToEnum (const char *str) {
+Saves saveStrToEnum (const char *str) {
     unsigned int i;
     for (i=0; i<sizeof(saveConversion)/sizeof(saveConversion[0]); i++)
-        if (!strcmp (str, skillConversion[i].str))
-            return skillConversion[i].val;    
-    return NONE;
+        if (!strcmp (str, saveConversion[i].str))
+            return saveConversion[i].val;    
+    return NONESAV;
 }
 
 void manageSkillString(const char* skills, Character* character, int proficiencyMultiplier) {
@@ -112,11 +113,11 @@ void manageSkillString(const char* skills, Character* character, int proficiency
     }
     printw("\n");
     char skill[5];
-    for(unsigned int i=0; i<strlen(formattedString); i+=4) {
+    for(unsigned int i=0; i<strlen(formattedString)-1; i+=4) {
         memcpy(skill, &formattedString[i], 4);
         skill[4] = '\0';
         Skills skl = skillStrToEnum(skill);
-        if(skl == NONE)
+        if(skl == NONESKL)
             printw("Invalid Skill %s\n", skill);
         else {
             character->skills[skl] = proficiencyMultiplier;
@@ -133,7 +134,36 @@ void manageSkillString(const char* skills, Character* character, int proficiency
 
 };
 
-void manageSaves() {
-
+void manageSaveString(const char* saves, Character* character) {
+    char* formattedString = (char*)malloc(strlen(saves));
+    memset(formattedString, '\0', strlen(saves));
+    unsigned int formatPos = 0;
+    for(unsigned int i=0; i<strlen(saves); i++) {
+        if(saves[i] >= 97 && saves[i] <= 122) {
+            formattedString[formatPos] = saves[i] - 32;
+            ++formatPos;
+        }
+        else if(saves[i] >= 65 && saves[i] <= 90) {
+            formattedString[formatPos] = saves[i];
+            ++formatPos;
+        }
+    }
+    printw("\n");
+    char save[4];
+    for(unsigned int i=0; i<strlen(formattedString)-1; i+=3) {
+        memcpy(save, &formattedString[i], 3);
+        save[3] = '\0';
+        Saves skl = saveStrToEnum(save);
+        if(skl == NONESAV)
+            printw("Invalid Save %s\n", save);
+        else {
+            character->skills[skl] = 1;
+            printw("Save %s marked as proficient\n", save);
+        }
+        refresh();
+    }
+    printw("\n");
+    free(formattedString);
+    formattedString = NULL;
 };
 
