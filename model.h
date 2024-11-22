@@ -1,12 +1,14 @@
 #pragma once
 
+#include <stdlib.h>
+
 typedef struct {
-    int STR;
-    int DEX;
-    int CON;
-    int INT;
-    int WIS;
-    int CHA;
+    int Str;
+    int Dex;
+    int Con;
+    int Int;
+    int Wis;
+    int Cha;
     int proficiency;
     int skills[17];
     int saves[6];
@@ -34,13 +36,13 @@ typedef enum {
     NONE
 } Skills;
 
-const static struct {
+static const struct {
     Skills      val;
     const char *str;
 } skillConversion [] = {
     {ACRO, "ACRO"},
     {ANIM, "ANIM"},
-    {ARCA, "ARC"},
+    {ARCA, "ARCA"},
     {ATHL, "ATHL"},
     {DECE, "DECE"},
     {HIST, "HIST"},
@@ -57,10 +59,81 @@ const static struct {
     {SURV, "SURV"}
 };
 
-char* parseSkillString(char* skills, Character* character, int proficiencyMultiplier) {
-    char skill[5];
-    for(int i=0; i<strlen(skills); i+=4) {
-        memcpy(skill, &skills[i], 4);
-        skill[4] = '\0';
-    }
+Skills skillStrToEnum (const char *str) {
+    unsigned int i;
+    for (i=0; i<sizeof(skillConversion)/sizeof(skillConversion[0]); i++)
+        if (!strcmp (str, skillConversion[i].str))
+            return skillConversion[i].val;    
+    return NONE;
+}
+
+typedef enum {
+    STR,
+    DEX,
+    CON,
+    INT,
+    WIS,
+    CHA
+} Saves;
+
+static const struct {
+    Saves      val;
+    const char *str;
+} saveConversion [] = {
+    {STR, "STR"},
+    {DEX, "DEX"},
+    {CON, "CON"},
+    {INT, "INT"},
+    {WIS, "WIS"},
+    {CHA, "CHA"},
 };
+
+Skills saveStrToEnum (const char *str) {
+    unsigned int i;
+    for (i=0; i<sizeof(saveConversion)/sizeof(saveConversion[0]); i++)
+        if (!strcmp (str, skillConversion[i].str))
+            return skillConversion[i].val;    
+    return NONE;
+}
+
+void manageSkillString(const char* skills, Character* character, int proficiencyMultiplier) {
+    char* formattedString = (char*)malloc(strlen(skills));
+    memset(formattedString, '\0', strlen(skills));
+    unsigned int formatPos = 0;
+    for(unsigned int i=0; i<strlen(skills); i++) {
+        if(skills[i] >= 97 && skills[i] <= 122) {
+            formattedString[formatPos] = skills[i] - 32;
+            ++formatPos;
+        }
+        else if(skills[i] >= 65 && skills[i] <= 90) {
+            formattedString[formatPos] = skills[i];
+            ++formatPos;
+        }
+    }
+    printw("\n");
+    char skill[5];
+    for(unsigned int i=0; i<strlen(formattedString); i+=4) {
+        memcpy(skill, &formattedString[i], 4);
+        skill[4] = '\0';
+        Skills skl = skillStrToEnum(skill);
+        if(skl == NONE)
+            printw("Invalid Skill %s\n", skill);
+        else {
+            character->skills[skl] = proficiencyMultiplier;
+            if(proficiencyMultiplier == 1)
+                printw("Proficiency marked for skill %s\n", skill);
+            else
+                printw("Expertise marked for skill %s\n", skill);
+        }
+        refresh();
+    }
+    printw("\n");
+    free(formattedString);
+    formattedString = NULL;
+
+};
+
+void manageSaves() {
+
+};
+

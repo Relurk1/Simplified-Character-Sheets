@@ -3,7 +3,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include "views.h"
-#include "util.h"
 
 void createController(Character* character) {
     clear();
@@ -17,10 +16,10 @@ void createController(Character* character) {
     long val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting STR to 10. This can be changed later\n\n");
-        character->STR = 10;
+        character->Str = 10;
     }
     else {
-        character->STR = (int)val;
+        character->Str = (int)val;
     }
 
     printw("Enter DEX score\n");
@@ -29,10 +28,10 @@ void createController(Character* character) {
     val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting DEX to 10. This can be changed later\n\n");
-        character->DEX = 10;
+        character->Dex = 10;
     }
     else {
-        character->DEX = (int)val;
+        character->Dex = (int)val;
     }
 
     printw("Enter CON score\n");
@@ -41,10 +40,10 @@ void createController(Character* character) {
     val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting CON to 10. This can be changed later\n\n");
-        character->CON = 10;
+        character->Con = 10;
     }
     else {
-        character->CON = (int)val;
+        character->Con = (int)val;
     }
 
     printw("Enter INT score\n");
@@ -53,10 +52,10 @@ void createController(Character* character) {
     val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting INT to 10. This can be changed later\n\n");
-        character->INT = 10;
+        character->Int = 10;
     }
     else {
-        character->INT = (int)val;
+        character->Int = (int)val;
     }
 
     printw("Enter WIS score\n");
@@ -65,10 +64,10 @@ void createController(Character* character) {
     val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting WIS to 10. This can be changed later\n\n");
-        character->WIS = 10;
+        character->Wis = 10;
     }
     else {
-        character->WIS = (int)val;
+        character->Wis = (int)val;
     }
 
     printw("Enter CHA score\n");
@@ -77,10 +76,10 @@ void createController(Character* character) {
     val = strtol(buffer, &endptr, 10);
     if(endptr == buffer || val < 0 || val > 20) {
         printw("Invalid input, setting CHA to 10. This can be changed later\n\n");
-        character->CHA = 10;
+        character->Cha = 10;
     }
     else {
-        character->CHA = (int)val;
+        character->Cha = (int)val;
     }
 
     printw("\nEnter Proficiency Bonus\n");
@@ -95,12 +94,24 @@ void createController(Character* character) {
         character->proficiency = (int)val;
     }
 
+    printw("Press enter to continue...\n>> ");
+    getch();
+
     clear();
+    for(int i=0; i<17; i++)
+        character->skills[i] = 0;
+
     char skills[128];
     printw("Enter a space seperated list of all skills with proficiency\n");
     printw(">> ");
     getnstr(skills, sizeof(skills));
-    parseSkillString(skills, character, 1);
+    manageSkillString(skills, character, 1);
+
+    memset(skills, '\0', 128);
+    printw("Enter a space seperated list of all skills with expertise");
+    printw(">> ");
+    getnstr(skills, sizeof(skills));
+    manageSkillString(skills, character, 2);
 
     getch();
 }
