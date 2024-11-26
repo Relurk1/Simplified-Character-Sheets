@@ -9,6 +9,8 @@
 int main() {
 
     Character character;
+    Spell spells[MAX_SPELLS];
+    //Weapon weapons[16];
 
     initscr();
 

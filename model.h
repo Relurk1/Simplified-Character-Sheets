@@ -10,7 +10,7 @@ typedef struct {
     int Wis;
     int Cha;
     int proficiency;
-    int skills[17];
+    int skills[18];
     int saves[6];
     int spellAbility;
 } Character;
@@ -54,6 +54,7 @@ static const struct {
     {NATU, "NATU"},
     {PERC, "PERC"},
     {PERF, "PERF"},
+    {PERS, "PERS"},
     {RELI, "RELI"},
     {SLEI, "SLEI"},
     {STEA, "STEA"},
@@ -169,10 +170,11 @@ void manageSaveString(const char* saves, Character* character) {
 };
 
 typedef struct {
-    char* name;
-    unsigned int level;
-    char* components;
-    char* range;
-    char* description; 
+    char name[64];
+    int level;
+    char components[8];
+    char range[32];
+    char description[128]; 
     bool attack;
 } Spell;
+

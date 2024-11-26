@@ -3,6 +3,11 @@
 #include <ncurses.h>
 #include <stdlib.h>
 
+const static unsigned int MAX_SPELLS = 512;
+static unsigned int NUM_SPELLS = 0;
+const static unsigned int MAX_WEAPONS = 16;
+static unsigned int NUM_WEAPONS = 0;
+
 void createController(Character* character) {
     clear();
     char buffer[16];
@@ -96,7 +101,7 @@ void createController(Character* character) {
     getch();
 
     clear();
-    for(int i=0; i<17; i++)
+    for(int i=0; i<18; i++)
         character->skills[i] = 0;
 
     char skills[128];
@@ -106,7 +111,7 @@ void createController(Character* character) {
     manageSkillString(skills, character, 1);
 
     memset(skills, '\0', 128);
-    printw("Enter a space seperated list of all skills with expertise\n");
+    printw("Enter a space seperated list of all saves with expertise\n");
     printw(">> ");
     getnstr(skills, sizeof(skills));
     manageSaveString(skills, character);
@@ -120,10 +125,81 @@ void loadController() {
     getch();
 }
 
-void addSpellController() {
+void addSpellController(Spell spells[512]) {
     clear();
-    printw("spell controller\n");
-    return;
+    if(NUM_SPELLS >= MAX_SPELLS) {
+        printw("No more spells can be added\n");
+        getch();
+        return;
+    }
+    printw("Add new spell\n");
+    Spell spell;
+    char buffer[128];
+    char *endptr;
+
+    printw("Enter the name of the spell\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(spell.name, buffer, 63);
+    spell.name[63] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the level of the spell (0 for cantrip)\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    long val = strtol(buffer, &endptr, 10);
+    if(endptr == buffer || val < 0 || val > 9) {
+        printw("Invalid value for spell level, setting to 0");
+        spell.level = 0;
+    }
+    else {
+        spell.level = (int)val;
+    }
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the components of the spell\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(spell.components, buffer, 7);
+    spell.components[7] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the range of the spell\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(spell.range, buffer, 31);
+    spell.range[31] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the description of the spell\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(spell.description, buffer, 127);
+    spell.description[127] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Does the spell require an attack roll? (Y/n)\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    if(strcmp(buffer, "y") == 0 || strcmp(buffer, "Y") == 0 || strcmp(buffer, "yes") == 0 || strcmp(buffer, "Yes") == 0) {
+        spell.attack = 1;
+    }
+    else if(strcmp(buffer, "no") == 0 || strcmp(buffer, "No") == 0 || strcmp(buffer, "no") == 0 || strcmp(buffer, "No") == 0) {
+        spell.attack = 0;
+    }
+    else {
+        printw("unable to parse selected option, setting option to false.\n");
+    }
+    memset(buffer, '\0', sizeof(buffer));
+
+    spells[NUM_SPELLS] = spell;
+    NUM_SPELLS += 1;
 }
 
 void addWeaponController() {
@@ -131,5 +207,6 @@ void addWeaponController() {
 }
 
 void parseCommandController() {
+    printw("command parsing coming soon\n");
     return;
 }

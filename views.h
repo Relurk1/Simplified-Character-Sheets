@@ -7,7 +7,7 @@
 void startView() {
     printw("Select an option:\n");
     printw("\tEnter \'c\' to create a new character\n");
-    printw("\tEnter \'l\' to load and existing character\n");
+    printw("\tEnter \'l\' to load an existing character\n");
     printw("\tEnter \'q\' to quit\n\n");
     printw(">> ");
     refresh();
@@ -28,8 +28,9 @@ void mainView() {
     printw("Main Menu:\n\n");
     printw("\t Enter \'1\' to add a new spell\n");
     printw("\t Enter \'2\' to add a new weapon\n");
-    printw("\t Enter \'3\' to quit\n");
-    printw("\n>>");
+    printw("\t Enter \'3\' to save character data\n");
+    printw("\n\t Enter \'q\' to quit\n");
+    printw("\n>> ");
     refresh();
     
     char buffer[16];
@@ -44,6 +45,9 @@ void mainView() {
         mainView();
     }
     else if(strcmp(buffer, "3") == 0) {
+        exportData();
+    }
+    else if(strcmp(buffer, "q") == 0 || strcmp(buffer, "quit") == 0) {
         return;
     }
     else {
