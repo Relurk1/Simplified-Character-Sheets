@@ -2,11 +2,9 @@
 
 #include <ncurses.h>
 #include <stdlib.h>
-#include "views.h"
 
 void createController(Character* character) {
     clear();
-    setupView();
     char buffer[16];
     char *endptr;
 
@@ -120,4 +118,18 @@ void loadController() {
     clear();
     printw("load\n");
     getch();
+}
+
+void addSpellController() {
+    clear();
+    printw("spell controller\n");
+    return;
+}
+
+void addWeaponController() {
+    return;
+}
+
+void parseCommandController() {
+    return;
 }

@@ -12,6 +12,7 @@ typedef struct {
     int proficiency;
     int skills[17];
     int saves[6];
+    int spellAbility;
 } Character;
 
 typedef enum {
@@ -167,3 +168,11 @@ void manageSaveString(const char* saves, Character* character) {
     formattedString = NULL;
 };
 
+typedef struct {
+    char* name;
+    unsigned int level;
+    char* components;
+    char* range;
+    char* description; 
+    bool attack;
+} Spell;

@@ -18,7 +18,7 @@ int main() {
     buffer[sizeof(buffer)-1] = '\0';
     while(strcmp(buffer, "q") != 0 && strcmp(buffer, "quit") != 0) {
         if(strcmp(buffer, "c") == 0 || strcmp(buffer, "create") == 0) {
-            createController(&character);
+            setupView(&character);
             break;
         }
         else if (strcmp(buffer, "l") == 0 || strcmp(buffer, "load") == 0) {
@@ -31,6 +31,12 @@ int main() {
         getnstr(buffer, sizeof(buffer));
         buffer[sizeof(buffer)-1] = '\0';
     }
+    if(strcmp(buffer, "q") == 0 || strcmp(buffer, "quit") == 0) {
+        endwin();
+        return 0;
+    }
+
+    mainView();
 
     endwin();
 
