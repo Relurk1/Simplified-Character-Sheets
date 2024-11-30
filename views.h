@@ -6,8 +6,9 @@
 
 void startView();
 void setupView(Character* character);
-void mainView(Character* character, Spell* spells);
+void mainView(Character* character, Spell* spells, Weapon* weapons);
 void spellListView(Spell* spells);
+void weaponListView(Weapon* weapons);
 
 void startView() {
     printw("Select an option:\n");
@@ -28,11 +29,12 @@ void setupView(Character* character) {
     createController(character);
 }
 
-void mainView(Character* character, Spell* spells) {
+void mainView(Character* character, Spell* spells, Weapon* weapons) {
     printw("Main Menu:\n\n");
     printw("\t Enter \'1\' to add a new spell\n");
     printw("\t Enter \'2\' to add a new weapon\n");
     printw("\t Enter \'3\' to view all spells\n");
+    printw("\t Enter \'4\' to view all weapons\n");
 
     printw("\n\t Enter \'e\' to export character data to file\n");
     printw("\t Enter \'q\' to quit\n");
@@ -44,15 +46,19 @@ void mainView(Character* character, Spell* spells) {
     buffer[sizeof(buffer)-1] = '\0';
     if(strcmp(buffer, "1") == 0) {
         addSpellController(spells);
-        mainView(character, spells);
+        mainView(character, spells, weapons);
     }
     else if(strcmp(buffer, "2") == 0) {
-        addWeaponController();
-        mainView(character, spells);
+        addWeaponController(weapons);
+        mainView(character, spells, weapons);
     }
     else if(strcmp(buffer, "3") == 0) {
         spellListView(spells);
-        mainView(character, spells);
+        mainView(character, spells, weapons);
+    }
+    else if(strcmp(buffer, "4") == 0) {
+        weaponListView(weapons);
+        mainView(character, spells, weapons);
     }
     else if(strcmp(buffer, "e") == 0) {
         return;
@@ -63,8 +69,7 @@ void mainView(Character* character, Spell* spells) {
     }
     else {
         parseCommandController();
-        return;
-        //mainView();
+        mainView(character, spells, weapons);
     }
 }
 
@@ -83,6 +88,25 @@ void spellListView(Spell* spells) {
         printw("Components: %s\n", spells[i].components);
         printw("Range: %s\n", spells[i].range);
         printw("%s\n\n", spells[i].description);
+    }
+    printw("\nPress enter to continue...\n>> ");
+    getch();
+    clear();
+}
+
+void weaponListView(Weapon* weapons) {
+    clear();
+    if(NUM_WEAPONS == 0) {
+        printw("No weapons saved\n");
+        printw("\nPress enter to continue...\n>> ");
+        getch();
+        clear();
+        return;
+    }
+    for(unsigned int i=0; i<NUM_WEAPONS; i++) {
+        printw("ID: %d\n", i);
+        printw("%s: %s %s damage\n\n", weapons[i].name, weapons[i].damage, weapons[i].damageType);
+
     }
     printw("\nPress enter to continue...\n>> ");
     getch();

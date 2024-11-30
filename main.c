@@ -10,6 +10,7 @@ int main() {
 
     Character character;
     Spell spells[MAX_SPELLS];
+    Weapon weapons[MAX_WEAPONS];
     //Weapon weapons[16];
 
     initscr();
@@ -38,7 +39,7 @@ int main() {
         return 0;
     }
 
-    mainView(&character, spells);
+    mainView(&character, spells, weapons);
 
     endwin();
 

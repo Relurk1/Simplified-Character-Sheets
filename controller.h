@@ -127,7 +127,7 @@ void loadController() {
     getch();
 }
 
-void addSpellController(Spell spells[512]) {
+void addSpellController(Spell spells[MAX_SPELLS]) {
     clear();
     if(NUM_SPELLS >= MAX_SPELLS) {
         printw("No more spells can be added\n");
@@ -206,8 +206,46 @@ void addSpellController(Spell spells[512]) {
     clear();
 }
 
-void addWeaponController() {
-    return;
+void addWeaponController(Weapon weapons[MAX_WEAPONS]) {
+    clear();
+    if(NUM_WEAPONS >= MAX_WEAPONS) {
+        printw("No more spells can be added\n");
+        getch();
+        return;
+    }
+    printw("Add new weapon\n");
+    Weapon weapon;
+    char buffer[64];
+
+    printw("Enter the name of the weapon\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(weapon.name, buffer, 63);
+    weapon.name[63] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the damage type of the weapon\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(weapon.damageType, buffer, 15);
+    weapon.damageType[15] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    printw("Enter the damage of the weapon\n");
+    printw(">> ");
+    getnstr(buffer, sizeof(buffer));
+    buffer[sizeof(buffer)-1] = '\0';
+    strncpy(weapon.damage, buffer, 7);
+    weapon.damage[7] = '\0';
+    memset(buffer, '\0', sizeof(buffer));
+
+    weapons[NUM_WEAPONS] = weapon;
+    NUM_WEAPONS += 1;
+
+    clear();
+
 }
 
 void parseCommandController() {

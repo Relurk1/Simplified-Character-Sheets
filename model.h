@@ -182,3 +182,9 @@ typedef struct {
     bool attack;
 } Spell;
 
+typedef struct {
+    char name[64];
+    char damage[8];
+    char damageType[16];
+} Weapon;
+
