@@ -114,6 +114,8 @@ void manageSkillString(const char* skills, Character* character, int proficiency
         }
     }
     printw("\n");
+    if(formatPos < 4)
+        return;
     char skill[5];
     for(unsigned int i=0; i<strlen(formattedString)-1; i+=4) {
         memcpy(skill, &formattedString[i], 4);
@@ -151,8 +153,10 @@ void manageSaveString(const char* saves, Character* character) {
         }
     }
     printw("\n");
+    if(formatPos < 3)
+        return;
     char save[4];
-    for(unsigned int i=0; i<strlen(formattedString)-1; i+=3) {
+    for(unsigned int i=0; i<strlen(formattedString)-2; i+=3) {
         memcpy(save, &formattedString[i], 3);
         save[3] = '\0';
         Saves skl = saveStrToEnum(save);

@@ -4,6 +4,11 @@
 #include "model.h"
 #include "controller.h"
 
+void startView();
+void setupView(Character* character);
+void mainView(Character* character, Spell* spells);
+void spellListView(Spell* spells);
+
 void startView() {
     printw("Select an option:\n");
     printw("\tEnter \'c\' to create a new character\n");
@@ -23,13 +28,14 @@ void setupView(Character* character) {
     createController(character);
 }
 
-void mainView() {
-    clear();
+void mainView(Character* character, Spell* spells) {
     printw("Main Menu:\n\n");
     printw("\t Enter \'1\' to add a new spell\n");
     printw("\t Enter \'2\' to add a new weapon\n");
-    printw("\t Enter \'3\' to save character data\n");
-    printw("\n\t Enter \'q\' to quit\n");
+    printw("\t Enter \'3\' to view all spells\n");
+
+    printw("\n\t Enter \'e\' to export character data to file\n");
+    printw("\t Enter \'q\' to quit\n");
     printw("\n>> ");
     refresh();
     
@@ -37,15 +43,20 @@ void mainView() {
     getnstr(buffer, sizeof(buffer));
     buffer[sizeof(buffer)-1] = '\0';
     if(strcmp(buffer, "1") == 0) {
-        addSpellController();
-        mainView();
+        addSpellController(spells);
+        mainView(character, spells);
     }
     else if(strcmp(buffer, "2") == 0) {
         addWeaponController();
-        mainView();
+        mainView(character, spells);
     }
     else if(strcmp(buffer, "3") == 0) {
-        exportData();
+        spellListView(spells);
+        mainView(character, spells);
+    }
+    else if(strcmp(buffer, "e") == 0) {
+        return;
+        //exportData();
     }
     else if(strcmp(buffer, "q") == 0 || strcmp(buffer, "quit") == 0) {
         return;
@@ -55,4 +66,25 @@ void mainView() {
         return;
         //mainView();
     }
+}
+
+void spellListView(Spell* spells) {
+    clear();
+    if(NUM_SPELLS == 0) {
+        printw("No spells saved\n");
+        printw("\nPress enter to continue...\n>> ");
+        getch();
+        clear();
+        return;
+    }
+    for(unsigned int i=0; i<NUM_SPELLS; i++) {
+        printw("ID: %d\n", i);
+        printw("%s: level %d spell\n", spells[i].name, spells[i].level);
+        printw("Components: %s\n", spells[i].components);
+        printw("Range: %s\n", spells[i].range);
+        printw("%s\n\n", spells[i].description);
+    }
+    printw("\nPress enter to continue...\n>> ");
+    getch();
+    clear();
 }

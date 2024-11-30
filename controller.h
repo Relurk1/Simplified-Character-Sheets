@@ -3,9 +3,9 @@
 #include <ncurses.h>
 #include <stdlib.h>
 
-const static unsigned int MAX_SPELLS = 512;
+static const unsigned int MAX_SPELLS = 512;
 static unsigned int NUM_SPELLS = 0;
-const static unsigned int MAX_WEAPONS = 16;
+static const unsigned int MAX_WEAPONS = 16;
 static unsigned int NUM_WEAPONS = 0;
 
 void createController(Character* character) {
@@ -116,7 +116,9 @@ void createController(Character* character) {
     getnstr(skills, sizeof(skills));
     manageSaveString(skills, character);
 
-    getch();
+   printw("\nPress Enter to continue...\n>> ");
+   getch();
+   clear();
 }
 
 void loadController() {
@@ -200,6 +202,8 @@ void addSpellController(Spell spells[512]) {
 
     spells[NUM_SPELLS] = spell;
     NUM_SPELLS += 1;
+
+    clear();
 }
 
 void addWeaponController() {

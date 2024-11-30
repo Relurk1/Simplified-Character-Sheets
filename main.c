@@ -38,7 +38,7 @@ int main() {
         return 0;
     }
 
-    mainView();
+    mainView(&character, spells);
 
     endwin();
 
